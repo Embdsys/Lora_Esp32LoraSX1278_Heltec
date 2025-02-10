@@ -20,7 +20,8 @@ SSD1306  display(0x3c, 4, 15);
 #define RST     14
 #define DI0     26
 #define BAND    433E6
- 
+bool flag = false;
+
 void setup() {
   pinMode(16,OUTPUT);
   digitalWrite(16, LOW);    // set GPIO16 low to reset OLED
@@ -48,12 +49,26 @@ void setup() {
   display.drawString(5,25,"LoRa Initializing OK!");
   display.display();
 }
+
+void toggleIO(String whichIO) {
+  if (whichIO && flag == false) {
+    flag = true;
+    pinMode(12,OUTPUT); // toggleIO()
+    pinMode(13,OUTPUT); // toggleIO()
+}
+  if (whichIO == "Hello..10"){
+    digitalWrite(12, !digitalRead(12));
+  }else if (whichIO == "Hello..5"){
+    digitalWrite(13, !digitalRead(13));
+  } 
+}
+
 void loop() {
   // try to aparse packet
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
     // received a packets
-    Serial.print("Received packet. ");
+//    Serial.print("Received packet. ");
     display.clear();
     display.setFont(ArialMT_Plain_16);
     display.drawString(3, 0, "Received packet ");
@@ -62,12 +77,13 @@ void loop() {
     while (LoRa.available()) {
     String data = LoRa.readString();
     Serial.print(data);
-    display.drawString(20,22, data);
+    display.drawString(20,22, data); // data contains the incoming message //
     display.display();
+    toggleIO(data); // function that selects which IO to trigger
     }
     // print RSSI of packet
-    Serial.print(" with RSSI ");
-    Serial.println(LoRa.packetRssi());
+//    Serial.print(" with RSSI ");
+//    Serial.println(LoRa.packetRssi());
     display.drawString(20, 45, "RSSI:  ");
     display.drawString(70, 45, (String)LoRa.packetRssi());
     display.display();
