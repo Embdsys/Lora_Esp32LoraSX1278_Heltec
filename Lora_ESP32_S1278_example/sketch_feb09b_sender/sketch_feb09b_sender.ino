@@ -68,6 +68,7 @@ void loop() {
   LoRa.print(counter);
   LoRa.endPacket();
   counter++;
+  if (counter > 12) {counter = 0;}
   digitalWrite(25, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(1000);                       // wait for a second
   digitalWrite(25, LOW);    // turn the LED off by making the voltage LOW
