@@ -21,7 +21,7 @@ SSD1306  display(0x3c, 4, 15);
 #define SS      18
 #define RST     14
 #define DI0     26
-#define BAND    433E6  //915E6 
+#define BAND    433E6  //915E6 does not work for ESP32LoraV2Heltec (Asia mode)
  
 int counter = 0;
  
