@@ -1,0 +1,2 @@
+flatpak install flathub cc.arduino.IDE2
+flatpak run cc.arduino.IDE2
